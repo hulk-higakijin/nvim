@@ -6,7 +6,6 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
-  { import = "astrocommunity.pack.ruby" },
   { import = "astrocommunity.editing-support.auto-save-nvim" },
   { import = "astrocommunity.completion.cmp-spell" },
 }
