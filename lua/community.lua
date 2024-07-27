@@ -6,6 +6,8 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
+  { import = "astrocommunity.pack.dart" },
   { import = "astrocommunity.editing-support.auto-save-nvim" },
   { import = "astrocommunity.completion.cmp-spell" },
+  { import = "astrocommunity.indent.indent-rainbowline" },
 }
