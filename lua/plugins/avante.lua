@@ -54,6 +54,10 @@ return {
         provider = "fzf", -- Avoid native provider issues
         provider_opts = {},
       },
+
+      copilot = {
+        disable_tools = true
+      }
     },
     build = LazyVim.is_win() and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" or "make",
   },
