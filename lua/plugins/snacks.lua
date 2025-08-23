@@ -9,6 +9,17 @@ return {
         border = "rounded"
       },
     },
+    explorer = {
+      enabled = true,
+    },
+    picker = {
+      sources = {
+        explorer = {
+          hidden = true,  -- 隠しファイルを常に表示
+          ignored = false, -- gitignoreされたファイルは表示しない（必要に応じてtrueに変更可能）
+        }
+      }
+    },
     lazygit = {
       enabled = true,
       configure = true,
