@@ -1,82 +1,73 @@
 return {
   "mrcjkb/rustaceanvim",
-  version = "^5",
-  lazy = false,
   ft = { "rust" },
   opts = {
     server = {
-      root_dir = function(fname)
-        -- Cargo.tomlがあるディレクトリをルートとする（ホームディレクトリを避ける）
-        local cargo_toml = vim.fs.find("Cargo.toml", {
-          upward = true,
-          stop = vim.env.HOME, -- HOMEで検索を止める
-          path = fname,
-        })[1]
-        if cargo_toml then
-          return vim.fs.dirname(cargo_toml)
-        end
-        return nil
+      on_attach = function(_, bufnr)
+        vim.keymap.set("n", "<leader>cR", function()
+          vim.cmd.RustLsp("codeAction")
+        end, { desc = "Code Action", buffer = bufnr })
+        vim.keymap.set("n", "<leader>dr", function()
+          vim.cmd.RustLsp("debuggables")
+        end, { desc = "Rust Debuggables", buffer = bufnr })
       end,
       default_settings = {
+        -- rust-analyzer language server configuration
         ["rust-analyzer"] = {
-          -- 最重要: パフォーマンス設定
           cargo = {
-            allFeatures = false, -- 全機能解析を無効化
+            allFeatures = true,
+            loadOutDirsFromCheck = true,
             buildScripts = {
-              enable = false, -- ビルドスクリプト実行を無効化
+              enable = true,
             },
           },
           checkOnSave = {
-            command = "check", -- cargo checkのみ実行（clippyより軽量）
-            allTargets = false, -- 全ターゲットをチェックしない
-          },
-          files = {
-            watcher = "client", -- ファイル監視を軽量化
-            excludeDirs = { "target", ".git", "node_modules" }, -- 監視除外
-          },
-          notifications = {
-            cargoTomlNotFound = false, -- 不要な通知を無効化
-          },
-          -- 優先度1: 安全に無効化できる機能
-          lens = {
-            enable = false, -- コードレンズを無効化（参照カウント等）
+            enable = true,
+            command = "clippy",
           },
           diagnostics = {
-            disabled = { "macro-error" }, -- macro-error を無効化
-            experimental = {
-              enable = false, -- 実験的診断を無効化
-            },
+            enable = true,
           },
-          cachePriming = {
-            enable = false, -- キャッシュプライミングを無効化（起動時負荷軽減）
-          },
-          workspace = {
-            symbol = {
-              search = {
-                limit = 128, -- シンボル検索の制限（大規模プロジェクト対策）
-              },
-            },
-          },
-          -- 優先度2: 条件付きで無効化
           procMacro = {
-            enable = false, -- プロシージャマクロを無効化（マクロ不使用時）
+            enable = true,
+            ignored = {
+              ["async-trait"] = { "async_trait" },
+              ["napi-derive"] = { "napi" },
+              ["async-recursion"] = { "async_recursion" },
+            },
           },
-          highlightRelated = {
-            references = {
-              enable = false, -- 関連項目のハイライトを無効化
-            },
-            exitPoints = {
-              enable = false,
-            },
-            breakPoints = {
-              enable = false,
-            },
-            yieldPoints = {
-              enable = false,
+          files = {
+            excludeDirs = {
+              ".direnv",
+              ".git",
+              ".github",
+              ".gitlab",
+              "bin",
+              "node_modules",
+              "target",
+              "venv",
+              ".venv",
             },
           },
         },
       },
     },
   },
+  config = function(_, opts)
+    if LazyVim.has("mason.nvim") then
+      local codelldb = vim.fn.exepath("codelldb")
+      local codelldb_lib_ext = io.popen("uname"):read("*l") == "Linux" and ".so" or ".dylib"
+      local library_path = vim.fn.expand("$MASON/opt/lldb/lib/liblldb" .. codelldb_lib_ext)
+      opts.dap = {
+        adapter = require("rustaceanvim.config").get_codelldb_adapter(codelldb, library_path),
+      }
+    end
+    vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
+    if vim.fn.executable("rust-analyzer") == 0 then
+      LazyVim.error(
+        "**rust-analyzer** not found in PATH, please install it.\nhttps://rust-analyzer.github.io/",
+        { title = "rustaceanvim" }
+      )
+    end
+  end,
 }
