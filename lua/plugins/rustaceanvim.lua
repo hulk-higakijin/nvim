@@ -15,7 +15,7 @@ return {
         -- rust-analyzer language server configuration
         ["rust-analyzer"] = {
           cargo = {
-            allFeatures = true,
+            allFeatures = false,
             loadOutDirsFromCheck = true,
             buildScripts = {
               enable = true,
@@ -23,7 +23,7 @@ return {
           },
           checkOnSave = {
             enable = true,
-            command = "clippy",
+            command = "check",
           },
           diagnostics = {
             enable = true,
