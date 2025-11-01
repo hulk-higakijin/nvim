@@ -11,6 +11,11 @@ return {
       local fn = vim.fn
       local utils = require("auto-save.utils.data")
       
+      -- バッファが有効かチェック
+      if not vim.api.nvim_buf_is_valid(buf) then
+        return false
+      end
+      
       -- overseerのバッファを除外
       local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
       if filetype == "overseer" or filetype == "OverseerList" or filetype == "OverseerForm" then
