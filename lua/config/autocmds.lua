@@ -7,3 +7,11 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+-- Rubyファイルでの自動整形を無効化
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "ruby",
+  callback = function()
+    vim.bo.indentkeys = "0{,0},0),0],:,0#,!^F,o,O,e"
+  end,
+})
+
