@@ -23,7 +23,7 @@ return {
           },
           checkOnSave = {
             enable = true,
-            command = "check",
+            command = "clippy",
           },
           diagnostics = {
             enable = true,
