@@ -2,6 +2,9 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+-- Press jj in insert mode to leave insert mode
+vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit insert mode" })
+
 -- Diffview toggle keymap
 vim.keymap.set("n", "<leader>dv", function()
   local view = require("diffview.lib").get_current_view()
