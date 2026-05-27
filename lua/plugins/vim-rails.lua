@@ -2,7 +2,6 @@ return {
   "tpope/vim-rails",
   lazy = false,
   keys = {
-    { "gd", "gf", remap = true, desc = "Go to file (gf)" },
     { "<leader>ra", "<cmd>A<cr>", desc = "Rails alternate file" },
     { "<leader>rm", "<cmd>Emodel<cr>", desc = "Rails model" },
     { "<leader>rv", "<cmd>Eview<cr>", desc = "Rails view" },
