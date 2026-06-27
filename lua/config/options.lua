@@ -18,14 +18,3 @@ vim.g.neovide_cursor_animation_length = 0.02
 vim.opt.termguicolors = true
 vim.opt.winblend = 0 -- ウィンドウの不透明度
 vim.opt.pumblend = 0 -- ポップアップメニューの不透明度
-
-vim.lsp.config("copilot", {
-  settings = {
-    github = {
-      copilot = {
-        selectedCompletionModel = "gpt-5.5",
-      },
-    },
-  },
-})
-vim.lsp.enable("copilot")
