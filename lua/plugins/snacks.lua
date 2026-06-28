@@ -48,7 +48,10 @@ return {
         explorer = {
           hidden = true,
           ignored = true,
-        }
+        },
+        lsp_definitions = {
+          unique_lines = true,
+        },
       }
     },
     lazygit = {
