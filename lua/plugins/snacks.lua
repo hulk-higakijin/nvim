@@ -57,9 +57,16 @@ return {
     lazygit = {
       enabled = true,
       configure = true,
+      env = {
+        NVIM = vim.v.servername,
+      },
       config = {
         os = {
-          editPreset = "nvim-remote",
+          -- Keep edits in the current tab instead of nvim-remote's --remote-tab.
+          edit = 'nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}',
+          editAtLine = 'nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"',
+          editAtLineAndWait = 'nvim --server "$NVIM" --remote {{filename}}',
+          openDirInEditor = 'nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}}',
         },
         gui = {
           showFileTree = true,
